@@ -32,5 +32,9 @@ Space Bar -----> Toggle Crouch
 Run instrutions:
 Download full and type ‘make’ in the terminal to create executable.
 
+**NOTE**
+Included with our game code is a Blender map we intended to utilize with the final version of the game and the obj loader we created to implement the map with our code. Had a we little more time, that would have been our final product.
+
+
 
 
