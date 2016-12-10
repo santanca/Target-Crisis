@@ -25,6 +25,7 @@ Implemented Features:
 
 Game Controls:
 Left Click ----> Shoot
+
 Space Bar -----> Toggle Crouch
 
 Objective:
