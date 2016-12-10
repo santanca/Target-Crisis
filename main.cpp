@@ -1234,7 +1234,7 @@ void ManageHealth(){
 		healthBar_image= images[1];
 	}else if (health ==1){	//Low Health
 		healthBar_image = images[2];
-	}else if (health == 0){	//Empty Health
+	}else if (health <= 0){	//Empty Health
 		healthBar_image = images[3];
 		gameOver = true;
 		//De-activate bullets
