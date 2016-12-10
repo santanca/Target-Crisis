@@ -144,6 +144,7 @@ int side = 0;
 int up = 0;
 float ang = 0.0f;
 
+//Used for getting hit and player radius is for bounded box test
 float playerX;
 float playerY;
 float playerZ;
@@ -174,7 +175,9 @@ vector<string> split(const string &s, char delim){
 	return elems;
 }
 
-//Carlos will comment
+/*
+Check if the player has been hit by an enemies bullet
+*/
 void checkPlayerHit(){
 	//Iterate through all bullets to see if the player got hit
 
@@ -193,6 +196,7 @@ void checkPlayerHit(){
 			if (z < playerZ + 2 && z > playerZ -2){
 				if (y < playerY + 2 && y > playerY -2){
 					
+					//Only get hit if the player is not crouching
 					if (cameraHeight == 2.5){
 						// /printf("Hit PLAYER x: %f, y: %f , z: %f \n", x,y,z );
 						point3D origin(enemyList[j].x,enemyList[j].y,enemyList[j].z);
@@ -211,8 +215,7 @@ void checkPlayerHit(){
 
 //Initialize Target, and target positions
 void createTargetList(){
-	//printf("  %f %f %f %f %f \n",targetInfo[i][j].x,targetInfo[i][j].y,targetInfo[i][j].z,targetInfo[i][j].radius,targetInfo[i][j].scale );
-	printf("Number of Targets in this stage: %i \n",targetInfo[stageNumber].size());
+	//iterate through this the targets scene, and add all of the targets in this stage to the stage(by adding to targetList)
 	for (int j = 0; j < targetInfo[stageNumber].size(); j++){
 		printf("  %f %f %f %f %f \n",targetInfo[stageNumber][j].x,targetInfo[stageNumber][j].y,targetInfo[stageNumber][j].z,targetInfo[stageNumber][j].radius,targetInfo[stageNumber][j].scale );
 		Target t(targetInfo[stageNumber][j].x,targetInfo[stageNumber][j].y,targetInfo[stageNumber][j].z,targetInfo[stageNumber][j].radius,targetInfo[stageNumber][j].scale);
@@ -222,8 +225,7 @@ void createTargetList(){
 
 //Initialize Target, and target positions
 void createEnemyList(){
-	//printf("  %f %f %f %f %f \n",targetInfo[i][j].x,targetInfo[i][j].y,targetInfo[i][j].z,targetInfo[i][j].radius,targetInfo[i][j].scale );
-	//printf("Number of Targets in this stage: %i \n",targetInfo[stageNumber].size());
+	//iterate through this scene, and add all of the enemies in this stage to the stage(by adding to EnemyList)
 	for (int j = 0; j < enemyInfo[stageNumber].size(); j++){
 		//printf("  %f %f %f %f %f \n",targetInfo[stageNumber][j].x,targetInfo[stageNumber][j].y,targetInfo[stageNumber][j].z,targetInfo[stageNumber][j].radius,targetInfo[stageNumber][j].scale );
 		Enemy e(enemyInfo[stageNumber][j].x,enemyInfo[stageNumber][j].y,enemyInfo[stageNumber][j].z,enemyInfo[stageNumber][j].radius,enemyInfo[stageNumber][j].scale,enemyInfo[stageNumber][j].waitTime,enemyInfo[stageNumber][j].moveDir,enemyInfo[stageNumber][j].moveSpeed);
@@ -243,7 +245,10 @@ void insertPoint3DLookAt(point3D *p){
 	lookAtPos->push_back(p);
 }
 
-
+/*
+Get a Direction vector and the point of origin 
+Ray Picking
+*/
 vector<vec3D> getRay(){
 	//construct Ray
 	GLdouble R0[3], R1[3], Rd[3];
@@ -285,7 +290,8 @@ vector<vec3D> getRay(){
 	return vector;
 }
 
-//Sphere Intersections
+//Check if you hit a single target
+//Sphere Intersections Test
 bool targetTest(vec3D Rd, vec3D R0, Target t){
 
 	//At^2 + Bt + C = 0
@@ -358,6 +364,8 @@ void targetIntersections(vec3D Rd, vec3D R0){
 
 }
 
+//Check if you hit a single enemy
+//Sphere intersection test
 bool enemyHitTest(vec3D Rd, vec3D R0, Enemy e){
 	//At^2 + Bt + C = 0
 	//A = Rd dot Rd
@@ -433,9 +441,12 @@ void DrawText(){
 		//calculate time
 		glDisable(GL_LIGHTING);
 		time1 =120-((elapsedTime)/250) + timeToReset;
+		//check if there is a game over
 		if(gameOver == false){
+			//check if  the level is cleared
 			if(isLevelCleared == false){
 				string str;
+				//dislpay proper time
 				if((time1+timeIncr) > 0){
 					str = to_string(time1+timeIncr);
 				}else{
@@ -506,6 +517,7 @@ void DrawText(){
 			
 			}
 	}else{
+		//Display game over
 		string str;
 		glLoadIdentity();
 		str = "GAME OVER";
@@ -857,7 +869,7 @@ GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 	return img;
 }
 
-
+//Function that takes care of everything when you click
 void click(){
 	if(isReloading == false && cameraHeight == 2.5){
 	//get the ray picking vector
@@ -878,15 +890,6 @@ void click(){
 	}
 	printf("ammo %i\n", ammo);
 	//calculate if you hit an enemy
-
-
-
-	/*
-	-Search through list of objects in the Scene Graph and test Intersections with all of them
-	-keep track of all the objects I hit, but only select the closest one
-	*/
-
-
 }
 
 /*
