@@ -1,3 +1,14 @@
+/*
+Computer Graphics 3GC3 Final Project (Group project)
+
+Cesar Antonio Santana Penner - 001411598
+Juan Carlos Santana Penner - 001411625
+Victor Timpau - 001414243
+Jin Lee - 001417622
+Date: December 9, 2016
+
+Description - On rails shooter game created with c++ and openGL. This is the main file
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -125,7 +136,6 @@ float fogColor[4] = {0.5, 0.5, 0.5, 1};
 
 //FLOOR
 int mapSize=100;
-vector<vector<float> > myfloor(mapSize,vector<float>(mapSize));
 
 //Crouching
 string crouching = "CROUCHING";
@@ -146,16 +156,6 @@ vector<vector<Target>> targetInfo;
 vector<Enemy> enemyList;
 vector<vector<Enemy>> enemyInfo;
 
-//Carlos will comment
-/*
-void drawPlayer(){
-	glPushMatrix();
-		glTranslatef(playerX,playerY,playerZ);
-	  	glColor3f(0,1,0);
-        glutWireSphere(playerRadius,50,10);
-    glPopMatrix();
-}
-*/
 
 //Splits string by a delimiter
 void split(const string &s, char delim, vector<string> &elems){
@@ -523,21 +523,22 @@ void DrawText(){
 //Draw the HUD
 void DrawHUD(){
 	glMatrixMode(GL_PROJECTION);
-	glDisable(GL_FOG); 
+	glDisable(GL_FOG); //disable fog for huds
 	glLoadIdentity();
 	gluOrtho2D(0, 800, 0, 800);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	//Draw Health Bar
 	glRasterPos2i(800,800-height);
 	glPixelZoom(-1, 1);
 	glDrawPixels(width,height,GL_RGB, GL_UNSIGNED_BYTE, healthBar_image);
-
+	//Draw ammo image
 	glLoadIdentity();
 	glRasterPos2i(800,800-height-height2);
 	glPixelZoom(-1, 1);
 	glDrawPixels(width2,height2,GL_RGB, GL_UNSIGNED_BYTE, ammo_image);
 
-
+	//Draw restart button if game is over or stage has been cleared
 	if(isLevelCleared == true || gameOver == true){
 		glLoadIdentity();
 		glRasterPos2i(500,300);
@@ -566,6 +567,7 @@ void DrawFloor(){
 	glPopMatrix();
 }
 
+//Modify Fog for terrain (Exponential)
 void terrainFog(){
 	glEnable(GL_FOG); 
 	glFogi(GL_FOG_MODE, GL_EXP);
@@ -574,6 +576,7 @@ void terrainFog(){
 	glHint(GL_FOG_HINT, GL_NICEST); 
 }
 
+//Modify Fog for enemies and target (Linear)
 void enemyFog(){
 	glEnable(GL_FOG); 
 	glFogi(GL_FOG_MODE, GL_LINEAR);
@@ -591,8 +594,6 @@ void drawTargets(){
 		targetList[i].draw(cameraPos->at(cameraIndex)->x,cameraPos->at(cameraIndex)->z);
 	}
 	terrainFog();
-
-
 }
 
 //Draw Enemies
@@ -619,17 +620,7 @@ void Draw3DScene(){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity(); 
 
-	/*float m_amb[] = {0.1, 0.1, 0.1, 1.0};
-	float m_dif[] = {0.5, 0.5, 0.5, 1.0};
-	float m_spec[] = {0.99, 0.91, 0.81, 1.0};
-	float shiny =10;*/
 
-	/*float m_amb[] = {0.3, 0, 0.0, 1.0};
-	float m_dif[] = {0.6, 0, 0, 1.0};
-	float m_spec[] = {0.8, 0.6, 0.6, 1.0};
-	float shiny = 32;*/
-	//printf("%f %f %f\n", cameraPos->at(cameraIndex)->x, cameraHeight, cameraPos->at(cameraIndex)->z);
-	//printf("%f %f %f\n", lookAtPos->at(lookAtIndex)->x,lookAtPos->at(lookAtIndex)->y,lookAtPos->at(lookAtIndex)->z);
 	gluLookAt(cameraPos->at(cameraIndex)->x, cameraHeight, cameraPos->at(cameraIndex)->z,
 			  lookAtPos->at(lookAtIndex)->x,lookAtPos->at(lookAtIndex)->y,lookAtPos->at(lookAtIndex)->z ,
 			  0,1,0);
@@ -637,11 +628,11 @@ void Draw3DScene(){
 	DrawFloor();
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
 	
+	//Draw Map
 	glPushMatrix();
 		glTranslatef(side,up,0);
 		glTranslatef(24,1,23);
 		glRotatef(70, 0,1,0);
-		//glScalef(1.5,1.3,0.5);
 		s.glutSolidCube2(1);
 		glTranslatef(-1.3,0,-0.2);
 		glRotatef(60, 0,1,0);
@@ -652,7 +643,6 @@ void Draw3DScene(){
 	glPushMatrix();
 		glTranslatef(15.1,1,21);
 		glRotatef(10, 0,1,0);
-		//glScalef(3,1.3,0.5);
 		glBindTexture(GL_TEXTURE_2D, textures[3]);
 		s.glutSolidCube2(1);
 		glRotatef(13, 0,1,0);
@@ -796,19 +786,18 @@ void Draw3DScene(){
 		s.glutSolidCube2(1);
 	glPopMatrix();
 
-	//drawPlayer();
-	checkPlayerHit();
 
-	/*glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity(); */
+	checkPlayerHit();
 	glDisable(GL_TEXTURE_2D);
 
+	//Draw the enemies 
 	if(isLevelCleared==false){
 		drawTargets();
 		drawEnemies();
 	}
 }
 
+//Loads ppm files
 GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 {
 	GLubyte* img;
@@ -875,15 +864,6 @@ void click(){
 	vector<vec3D> vector = getRay();
 	vec3D Rd = vector[1];
 	vec3D R0 = vector[0];
-/*	
-	printf("--------------- \n ");
-	printf("Rd: %f, %f, %f |  \n", Rd.x, Rd.y, Rd.z);
-	printf("R0: %f, %f, %f | \n", R0.x, R0.y, R0.z);
-*/
-	//check floor intersections
-	//floorIntersection(Rd,R0);
-
-	//check for target intersections
 	targetIntersections(Rd,R0);
 
 	//calculate if you hit an enemy
@@ -1034,7 +1014,7 @@ void loadTargets(){
 	}
 }
 
-
+//Restarts the game
 void restartGame(){
 	isLevelCleared = false;
 	stageNumber = 0;
@@ -1059,7 +1039,7 @@ void restartGame(){
 		timeIncr++;
 	}
 
-
+	//reset the enemies and targets
 	while (enemyList.size() > 0){
 		enemyList.pop_back();
 	}
@@ -1070,16 +1050,6 @@ void restartGame(){
 	//create new scene?
 	createTargetList();
 	createEnemyList();
-
-	/*
-	while (enemyList.size() > 0){
-		enemyList.pop_back();
-	}
-	while (enemyList.size() > 0){
-		enemyList.pop_back();
-	}
-	*/
-	//reinitialize everything
 
 }
 
@@ -1119,7 +1089,7 @@ void passive(int x, int y){
 	mouseY = 800 - y;
 }
 
-
+// Handle basic keyboard press events
 void keyboard(unsigned char key, int x, int y)
 {
 
@@ -1130,55 +1100,6 @@ void keyboard(unsigned char key, int x, int y)
 		case 27:
 			exit (0);
 			break;
-
-		case 'a':
-		case 'A':
-			if(light_pos[0] > -15)
-				light_pos[0]-=1;
-			break;
-
-		case 'w':
-		case 'W':
-			if(light_pos[2] > -15)
-				light_pos[2] -= 1;
-			break;
-
-		case 'd':
-		case 'D':
-			if(light_pos[0] < 15)
-				light_pos[0]+=1;
-			break;
-
-		case 's':
-		case 'S':
-			if(light_pos[2] < 15)
-				light_pos[2] += 1;
-			break;
-
-		case 'r':
-			if(light_pos[1] < 15)
-				light_pos[1] += 1;
-			break;
-
-		case 'f':
-			if(light_pos[1] > 0)
-				light_pos[1] -= 1;
-			break;
-		case 'x':
-			//printf("cameraIndex %i, Size: %i  \n",cameraIndex, cameraPos->size()-1 );
-			if(cameraIndex < cameraPos->size()-1){
-				cameraIndex++;
-			}
-			break;
-		case 'z':
-			if(first == true){
-				first = false;
-			}else{
-				if(stageNumber < stages->size() ){
-					stageNumber++;
-				}
-			}
-			break;
 		case ' ':
 			if(cameraHeight == 1.5){
 				cameraHeight = 2.5;
@@ -1186,58 +1107,8 @@ void keyboard(unsigned char key, int x, int y)
 				cameraHeight = 1.5;
 			}
 			break;
-		case 'v':
-			if(lookAtIndex < lookAtPos->size()-1){
-				lookAtIndex++;
-			}else{
-				lookAtIndex = 0;
-			}
-			break;
-		case 'b':
-			//image_data = LoadPPM("h2.ppm", &width, &height, &max2);
-			health--;
-			break;
-		case 'n':
-			//image_data = LoadPPM("h2.ppm", &width, &height, &max2);
-			timeIncr +=10;
-			break;
-
-
 	}
 
-	glutPostRedisplay();
-}
-
-void special(int key, int x, int y)
-{
-	/* arrow key presses move the camera */
-	switch(key)
-	{
-		case GLUT_KEY_LEFT:
-			camPos[0]-=0.1;
-			break;
-
-		case GLUT_KEY_RIGHT:
-			camPos[0]+=0.1;
-			break;
-
-		case GLUT_KEY_UP:
-			camPos[2] -= 0.1;
-			break;
-
-		case GLUT_KEY_DOWN:
-			camPos[2] += 0.1;
-			break;
-		
-		case GLUT_KEY_HOME:
-			camPos[1] += 0.1;
-			break;
-
-		case GLUT_KEY_END:
-			camPos[1] -= 0.1;
-			break;
-
-	}
 	glutPostRedisplay();
 }
 
@@ -1259,15 +1130,14 @@ void getSlopeVector(point3D *start, point3D *end, int steps){
 
 	//add the camera position for each frame
 	insertPoint3D(start);
-	printf("Start: %f %f %f \n", start->x, start->y, start->z );
 	frameCounter++;
 
 	//interpolate all the points between the start and end points
+	
 	for (int i = 1; i < steps; ++i)
 	{
 
 		point3D *p = new point3D(x1+run, y, z1+rise);
-		printf("\t %f %f %f \n", p->x, p->y, p->z );
 		
 		insertPoint3D(p);
 		x1 +=run;
@@ -1276,7 +1146,6 @@ void getSlopeVector(point3D *start, point3D *end, int steps){
 	}
 
 	insertPoint3D(end);
-	printf("End: %f %f %f \n", end->x, end->y, end->z );
 	frameCounter++;
 	stages->push_back(frameCounter);
 
@@ -1362,9 +1231,8 @@ void ManageHealth(){
 		healthBar_image = images[2];
 	}else if (health == 0){	//Empty Health
 		healthBar_image = images[3];
-		printf("GAME OVER\n");
 		gameOver = true;
-		//isLevelCleared = true;
+		//De-activate bullets
 		for (int i = 0; i < enemyList.size(); i++){
 			enemyList[i].bullet.active = false;
 		}
@@ -1377,6 +1245,7 @@ void ManageHealth(){
 
 //Display proper ammo image on hud
 void ManageAmmo(){
+	//display picture based on how much ammo the player has
 	if(ammo == 6){
 		ammo_image = images[4];
 	}else if (ammo==5){
@@ -1397,14 +1266,11 @@ void ManageAmmo(){
 		if(isTimed== true){
 			startTime = time1+timeIncr+timeReloadCounter;
 			endTime= startTime - timeReloadCounter;
-			printf("INITIAL Start time: %i, End time: %i\n",startTime, endTime);
 			isTimed = false;
 		}else{
 			timeReloadCounter--;
 			startTime = time1+timeIncr+timeReloadCounter;
-			printf("Start time: %i, End time: %i\n",startTime, endTime);
 			if(startTime <= endTime){
-				printf("DONE RELOADING\n");
 				isReloading = false;
 				ammo=6;
 				isTimed = true;
@@ -1418,9 +1284,7 @@ void ManageAmmo(){
 //Initialize variables and Hud images
 void init(void)
 {
-	deer = Object("car.obj");
-
-	
+	//Load HUD images
 	images[0] = LoadPPM("HUD/h1.ppm", &width, &height, &max2);
 	images[1] = LoadPPM("HUD/h2.ppm", &width, &height, &max2);
 	images[2] = LoadPPM("HUD/h3.ppm", &width, &height, &max2);
@@ -1437,8 +1301,7 @@ void init(void)
 	ammo_image = images[4];
 	restart_image = images[11];
 
-	
-
+	//Load Textures
 	crate_tex = LoadPPM("Textures/crates_256.ppm", &width5, &height5, &max6);
 	stone_tex = LoadPPM("Textures/stone_256.ppm", &width4, &height4, &max5);
 	steel_tex = LoadPPM("Textures/steel_256.ppm", &width6, &height6, &max7);
@@ -1495,51 +1358,40 @@ void init(void)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-
-	//images[12] = LoadPPM("Textures/crates_256.ppm", &width4, &height4, &max5);
-	//images[13] = LoadPPM("Textreus/stone_256.ppm", &width4, &height4, &max5);
-
-
 	glDisable(GL_TEXTURE_2D);
 
 
 	glClearColor(0, 0, 0, 0);
 	glColor3f(1, 1, 1);
-
+	//Enable lighting
 	glEnable(GL_LIGHTING);
+	//Enable Light0
 	glEnable(GL_LIGHT0);
-
 	float position[4] = {20,10,20, 20};
-
 	float amb[4] = {0.5, 0.5, 0.5, 1};
 	float diff[4] = {1,1,1, 1};
 	float spec[4] = {1,1,1, 1};
-
-
 	glLightfv(GL_LIGHT0, GL_POSITION, position);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diff);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, amb);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, spec);
-
+	//Enable Light1
 	glEnable(GL_LIGHT1);
-
 	float position1[4] = {0,10,0, 20};
 	float amb1[4] = {0.5, 0.5, 0.5, 1};
 	float diff1[4] = {1,1,1, 1};
 	float spec1[4] = {1,1,1, 1};
-
-
 	glLightfv(GL_LIGHT1, GL_POSITION, position1);
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diff1);
 	glLightfv(GL_LIGHT1, GL_AMBIENT, amb1);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, spec1);
 
+	//Load camera position and look at positions form text file
 	loadCameraPoints();
 	loadLookAtPosition();
 	cameraPosSize = 0;
 
-
-
+	//Enable FOG
 	glEnable(GL_FOG); 
 	glFogi(GL_FOG_MODE, GL_EXP);
 	glFogfv(GL_FOG_COLOR, fogColor);  
@@ -1548,37 +1400,21 @@ void init(void)
 	glFogf(GL_FOG_START,1);
 	glFogf(GL_FOG_END,45);
 
-
-	//printf("Stage Size: %i\n", stages->size() );
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	//glOrtho(-2, 2, -2, 2, -2, 2);
-	//glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
 	gluPerspective(45, 1, 1, 100);
 
 	//Initialze Targets
 	loadTargets();
 	printTargetInfo();
 	createTargetList();
-
+	//load enemies
 	loadEnemies();
 	createEnemyList();
-
-	for (int x = 0; x < myfloor.size(); ++x)
-	{
-		for (int z = 0; z < myfloor.size(); ++z)
-		{
-			myfloor[x][z] = 0.0f;
-		}
-	}
-
-	//elapsedTime = time (NULL);
-		
 }
 
+//Manage where the camera is looking at based on stage number
 void look(){
-	//printf("LOOK: %i STAGE: %i\n", lookAtIndex, stageNumber);
 	if(stageNumber == 0){
 		lookAtIndex = 0;
 	}else if (stageNumber == 1){
@@ -1603,8 +1439,8 @@ void look(){
 //OpenGl function that handles the frames per second
 void FPS(int val){
 	glutPostRedisplay();
-	//printf("Stage number: %i\n", stageNumber );
 	if(first == false){
+		//Handle when the camera moves
 		if(cameraIndex < cameraPos->size()-1 && cameraIndex <=stages->at(stageNumber)){
 			cameraIndex++;
 			glutTimerFunc(100,FPS,100);
@@ -1613,12 +1449,14 @@ void FPS(int val){
 
 }
 
+//Check if the stage has been cleared
 void checkClearedStage(){
+	//the stage has been cleared when target and enemies have been destroyed
 	if(targetList.size()==0 && enemyList.size() == 0){
-		printf("Hello\n");
 		if(first == true){
 			first = false;
 		}else{
+			//increase stage number
 			if(stageNumber < stages->size() ){
 				stageNumber++;
 			}
@@ -1646,20 +1484,16 @@ void display(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	elapsedTime = glutGet(GLUT_ELAPSED_TIME);
-	if(isLevelCleared == true){
-		/*if(firstTime == true){
-			timeAtReset = glutGet(GLUT_ELAPSED_TIME);
-			//timeAtReset = glutGet(GLUT_ELAPSED_TIME);
-			firstTime = false;
-		}*/
-	}
+	//Draw HUD, Text, and 3D scene
 	DrawHUD();
 	DrawText();
 	Draw3DScene();
+	//Check if the level has been cleared
 	if(stageNumber == stages->size()-1){
 		isLevelCleared = true;
 	}
 
+	//Don't manage health and ammo if the level has been cleared
 	if(isLevelCleared == false){
 		ManageHealth();
 		ManageAmmo();
@@ -1668,10 +1502,6 @@ void display(void)
 	}
 	glutTimerFunc(100,FPS,0);
 	glutSwapBuffers(); 
-	//printf("%f %f %f\n", cameraPos->at(cameraIndex)->x, cameraHeight, cameraPos->at(cameraIndex)->z);
-
-
-
 }
 
 /* main function - program entry point */
@@ -1691,7 +1521,6 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(keyboard);
 	glutMouseFunc(mouse);
 	glutPassiveMotionFunc(passive);
-	glutSpecialFunc(special);
 
 	glEnable(GL_DEPTH_TEST);
 	init();
