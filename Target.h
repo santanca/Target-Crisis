@@ -1,5 +1,5 @@
 /*
-Computer Graphics 3GC3 Final Project (Group project)
+Computer Graphics 3GC3 Final Project: Target Smash
 
 Cesar Antonio Santana Penner - 001411598
 Juan Carlos Santana Penner - 001411625
@@ -20,11 +20,9 @@ public:
 
 	float x,y,z;			//the center of the hitbox
 	float radius;			//radius of target
-	float scale;			//
-	float rotY;
+	float scale;			//scale of the target
+	//Target Rotation
+	float rotY;			
 	float rotX;
 	float rotZ;
-
-//private:
-	//float privateVar;
 };

@@ -1,14 +1,13 @@
 /*
-Computer Graphics 3GC3 Final Project (Group project)
+Computer Graphics 3GC3 Assignment 3: 3D Modeller (Group project)
 
 Cesar Antonio Santana Penner - 001411598
 Juan Carlos Santana Penner - 001411625
-Victor Timpau - 001414243
-Jin Lee - 001417622
-Date: December 9, 2016
+Date: December 1, 2016
 
-Description - On rails shooter game created with c++ and openGL. 
+Description - Hitbox class
 */
+
 #include <stdio.h>    //printf command
 #include <stdlib.h>
 
@@ -29,19 +28,19 @@ Description - On rails shooter game created with c++ and openGL.
 #define PI 3.14159265   //used for hit detection calculations
 
 
-Enemy::Enemy(float xcord, float ycord, float zcord,float rad, float theScale, float initTime,float popDir, float speed){	//constructor
-	//store the center of the cube
-	x = xcord;
-	y = ycord;
-	z = zcord;
-	rotX = 0;
-	rotY = 0;
-	rotZ = 0;
-	active = false;           //enemies start off in active
+Enemy::Enemy(float xcord, float ycord, float zcord,float rad, float theScale, float initTime,float popDir, float speed){  //constructor
+  //store the center of the cube
+  x = xcord;
+  y = ycord;
+  z = zcord;
+  rotX = 0;
+  rotY = 0;
+  rotZ = 0;
+  active = false;           //enemies start off in active
   moved = false;          //for when the enemy has finished poping up
 
-	scale = theScale;
-  radius = 5.8*rad*scale;
+  scale = theScale;
+  radius = rad;
 
   point3D p(x,y,z);
   point3D p1(x+1,y,z);
