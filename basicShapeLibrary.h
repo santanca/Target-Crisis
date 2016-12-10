@@ -1,9 +1,14 @@
 /*
-Computer Graphics 3GC3 Assignment 3: 3D Modeller (Group project)
+Computer Graphics 3GC3 Final Project (Group project)
 
 Cesar Antonio Santana Penner - 001411598
 Juan Carlos Santana Penner - 001411625
-Date: December 1, 2016
+Victor Timpau - 001414243
+Jin Lee - 001417622
+Date: December 9, 2016
+
+Description - On rails shooter game created with c++ and openGL.
+
 
 ATTENTION: Since glutSolid<Shape> does not provide texture coordinates we got the
            source code from glut (https://www.opengl.org/resources/libraries/glut/).
@@ -12,7 +17,7 @@ ATTENTION: Since glutSolid<Shape> does not provide texture coordinates we got th
 
 
 Description - Shape class
-*/
+
 /* Copyright (c) Mark J. Kilgard, 1994, 1997. */
 
 /**                                                                             
