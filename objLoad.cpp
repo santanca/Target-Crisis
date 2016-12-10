@@ -63,7 +63,7 @@ Object::Object() {
  
 Object::Object(std::string s) {
   int counter = 0; 
-  printf("loading obj file"); 
+  //printf("loading obj file"); 
   std::string line; 
   std::ifstream myfile(s); 
   std::vector<std::string> args; 
@@ -100,7 +100,7 @@ Object::Object(std::string s) {
         
       }
     }
-    printf("Succesfully loaded object with %i faces", facesList.size());
+    //printf("Succesfully loaded object with %i faces", facesList.size());
   } else {
     printf("\n\nERROR OPENING FILE\n\n");
   }

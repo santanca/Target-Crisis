@@ -217,7 +217,7 @@ void checkPlayerHit(){
 void createTargetList(){
 	//iterate through this the targets scene, and add all of the targets in this stage to the stage(by adding to targetList)
 	for (int j = 0; j < targetInfo[stageNumber].size(); j++){
-		printf("  %f %f %f %f %f \n",targetInfo[stageNumber][j].x,targetInfo[stageNumber][j].y,targetInfo[stageNumber][j].z,targetInfo[stageNumber][j].radius,targetInfo[stageNumber][j].scale );
+		//printf("  %f %f %f %f %f \n",targetInfo[stageNumber][j].x,targetInfo[stageNumber][j].y,targetInfo[stageNumber][j].z,targetInfo[stageNumber][j].radius,targetInfo[stageNumber][j].scale );
 		Target t(targetInfo[stageNumber][j].x,targetInfo[stageNumber][j].y,targetInfo[stageNumber][j].z,targetInfo[stageNumber][j].radius,targetInfo[stageNumber][j].scale);
 		targetList.push_back(t);
 	}
@@ -313,7 +313,7 @@ bool targetTest(vec3D Rd, vec3D R0, Target t){
 	//if d > 0 ray intersects sphere in two points
 
 	if (d < 0 ){
-		printf("You missed the sphere! \n");
+		//printf("You missed the sphere! \n");
 		return false;
 	}else if (d > 0){
 
@@ -333,7 +333,7 @@ bool targetTest(vec3D Rd, vec3D R0, Target t){
 		P[2] = R0.z + t0*Rd.z;
 
 		//printf("Target hit! x: %f, y: %f , z: %f \n", t.x,t.y,t.z );
-		printf("Hit at: x: %f , y: %f , z: %f \n", P[0], P[1], P[2]);
+		//printf("Hit at: x: %f , y: %f , z: %f \n", P[0], P[1], P[2]);
 		return true;
 	}
 	return false;
@@ -359,7 +359,7 @@ void targetIntersections(vec3D Rd, vec3D R0){
 	for (int i = 0 ; i<targetHits.size(); i++){
 		//printf("Target id: %i \n", targetHits[i]);
 		targetList.erase( targetList.begin() + targetHits[i], targetList.begin() + targetHits[i]+1  );
-		printf("Hit & Deleted Target id: %i \n", targetHits[i]);
+		//printf("Hit & Deleted Target id: %i \n", targetHits[i]);
 	}
 
 }
@@ -429,7 +429,7 @@ void enemyIntersections(vec3D Rd, vec3D R0){
 	for (int i = 0 ; i<enemyHits.size(); i++){
 		//printf("Target id: %i \n", targetHits[i]);
 		enemyList.erase( enemyList.begin() + enemyHits[i], enemyList.begin() + enemyHits[i]+1  );
-		printf("Hit & Deleted enemy id: %i \n", enemyHits[i]);
+		//printf("Hit & Deleted enemy id: %i \n", enemyHits[i]);
 	}
 
 }
@@ -842,14 +842,14 @@ GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 		printf("%s is not a PPM file!\n",file); 
 		exit(0);
 	}
-	printf("%s is a PPM file\n", file);
+	//printf("%s is a PPM file\n", file);
 	fscanf(fd, "%c",&c);
 
 	/* next, skip past the comments - any line starting with #*/
 	while(c == '#') 
 	{
 		fscanf(fd, "%[^\n] ", b);
-		printf("%s\n",b);
+		//printf("%s\n",b);
 		fscanf(fd, "%c",&c);
 	}
 	ungetc(c,fd); 
@@ -857,7 +857,7 @@ GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 	/* now get the dimensions and max colour value from the image */
 	fscanf(fd, "%d %d %d", &n, &m, &k);
 
-	printf("%d rows  %d columns  max value= %d\n",n,m,k);
+	//printf("%d rows  %d columns  max value= %d\n",n,m,k);
 
 	/* calculate number of pixels and allocate storage for this */
 	nm = n*m;
@@ -1074,7 +1074,7 @@ void mouse(int btn, int state, int x, int y){
 	//create a dent if the right button is pressed
 	}else if(btn == GLUT_RIGHT_BUTTON){
 		if(state == GLUT_DOWN){
-			printf("Right click %i , %i \n", mouseX, mouseY);
+			//printf("Right click %i , %i \n", mouseX, mouseY);
 			click();
 		}
 	}
@@ -1196,7 +1196,7 @@ void loadCameraPoints(){
 			if(sub.size() > 1){
 				if(first == true){
 					start = new point3D(stoi(sub.at(0)),stoi(sub.at(1)), stoi(sub.at(2)));
-					cout<<"Start " <<sub.at(0) << " " + sub.at(1) << " "+ sub.at(2) << endl;
+					//cout<<"Start " <<sub.at(0) << " " + sub.at(1) << " "+ sub.at(2) << endl;
 					first = false;
 				}else{
 					end = new point3D(stoi(sub.at(0)),stoi(sub.at(1)), stoi(sub.at(2)));
@@ -1217,11 +1217,11 @@ Carlos Will comment this section
 void printTargetInfo(){
 
 	for ( int i = 0; i < targetInfo.size(); i++){
-		printf("Start of new Stage. Targets: \n");
+		//printf("Start of new Stage. Targets: \n");
 		for (int j = 0; j< targetInfo[i].size(); j ++){
-			printf("  %f %f %f %f %f \n",targetInfo[i][j].x,targetInfo[i][j].y,targetInfo[i][j].z,targetInfo[i][j].radius,targetInfo[i][j].scale );
+			//printf("  %f %f %f %f %f \n",targetInfo[i][j].x,targetInfo[i][j].y,targetInfo[i][j].z,targetInfo[i][j].radius,targetInfo[i][j].scale );
 		}
-		printf("End of Stage. \n");
+		//printf("End of Stage. \n");
 	}
 }
 
@@ -1286,9 +1286,28 @@ void ManageAmmo(){
 	}
 }
 
+//Prints all the instructions
+void printInstruction(){
+	printf("\n\n");
+	printf("\t \t Hello and welcome TARGET CRISIS\n");
+	printf("--------------------By Juan Santana, Cesar Santana----------------------\n");
+	printf("-------------------- Victor Timpau and Jin Lee----------------------\n");
+	printf("---------------------------------------------------------------------------\n");
+	printf("q or ESCAP--------------> Quit the program\n");
+	printf("LEFT CLICK--------------> Shoot\n");
+	printf("Space bar---------------> Toggle Crouch\n");
+	printf("----------------------------------- RULES/OBJECTIVE -----------------------------\n");
+	printf("Clear the level in the shortest amount of time by destroying enemies and targets\n");
+	printf("Note: You only have 6 bullets before you have to reload.\n");
+	printf("Note: Crouch when getting shot at to avoid getting damaged.\n");
+	printf("Note: While crouching you cannot shoot the enemies\n");
+}
+
 //Initialize variables and Hud images
 void init(void)
 {
+
+	printInstruction();
 	//Load Car obj
 	car = Object("car.obj");
 
