@@ -452,7 +452,6 @@ void DrawText(){
 				}else{
 					str = "0";
 					gameOver = true;
-					
 				}
 
 				
@@ -871,7 +870,7 @@ GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 
 //Function that takes care of everything when you click
 void click(){
-	if(isReloading == false && cameraHeight == 2.5){
+	if(isReloading == false && cameraHeight == 2.5 && gameOver == false){
 	//get the ray picking vector
 	vector<vec3D> vector = getRay();
 	vec3D Rd = vector[1];
@@ -888,22 +887,18 @@ void click(){
 			ammo = 6;
 		}
 	}
-	printf("ammo %i\n", ammo);
-	//calculate if you hit an enemy
 }
 
 /*
-Carlos Will comment this section
+Read from loadEnemies
 */
 void loadEnemies(){
 
 	int stageIndex = 0;
 	int saveIndex = 0;
 	bool pushNewStage = false;
-
 	string line;
 	ifstream myfile( "loadEnemies.txt" );
-
 	vector<Enemy> stageEnemies;
 
 	if (myfile.is_open()){
@@ -923,8 +918,6 @@ void loadEnemies(){
 			}
 			//printf("/ \n");
 			if (pushNewStage == true){
-				//printf("----------- \n");
-
 				//push current vector of this stages enemies
 				enemyInfo.push_back(stageEnemies);
 
@@ -957,7 +950,7 @@ void loadEnemies(){
 }
 
 /*
-Carlos Will comment this section
+Load Targets from loadTargets.txt
 */
 void loadTargets(){
 
@@ -988,7 +981,6 @@ void loadTargets(){
 			//printf("/ \n");
 			if (pushNewStage == true){
 				//printf("----------- \n");
-
 				//push current vector of this stages targets
 				targetInfo.push_back(stageTarget);
 
@@ -996,9 +988,7 @@ void loadTargets(){
 				while (stageTarget.size() > 0){
 					stageTarget.pop_back();
 				}
-				
 				pushNewStage = false;
-				
 			}else {
 				//make a Target and add to the stage
 				Target t(stof(targets[0]),
@@ -1008,7 +998,6 @@ void loadTargets(){
 					stof(targets.at(4)) );
 				stageTarget.push_back(t);
 			}
-			
 		}
 		//printf("There are %i stages \n", stageIndex );
 		myfile.close();
