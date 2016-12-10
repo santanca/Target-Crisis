@@ -15,25 +15,26 @@ Your mission, should you choose to accept, is to clear each stage with the highe
 This game was developed in c++ and OpenGL. 
 
 Implemented Features:
-	-Texturing (On obstacles, floor, etc.)
+	-Texturing (Scene obstacles and floor)
 	-Lighitng (2 Lights)
-	-Ray Picking (Enemies....)
+	-Ray Picking (Sphere hit detection for target and enemies)
 	-Fog (for map and enemies)
-	-HUD (for player health, ammo count, score, time)
+	-HUD (for player health, ammo count, score, time, restart button)
 	-Animation (Enemies)
 	-Object Loading
-
 
 Game Controls:
 Left Click ----> Shoot
 Space Bar -----> Toggle Crouch
 
+Objective:
+Clear the stage of enemies in the shortest amount of time. When enemies are shooting at you you will have the chance to duck/crouch behind obstacles to avoid getting hit. If you get hit three times or you run out of time its a GAME OVER.
 
 Run instrutions:
-Download full and type ‘make’ in the terminal to create executable.
+Download folder and type ‘make’ in the terminal to create executable.
 
 **NOTE**
-Included with our game code is a Blender map we intended to utilize with the final version of the game and the obj loader we created to implement the map with our code. Had a we little more time, a combination of the game mechanics you see here in our finished beta and the blender map would have been our final product.
+Included with our game code is a Blender map we intended to utilize with the final version of the game and the obj loader we created to implement the map with our code. Had we a little more time, a combination of the game mechanics you see here in our finished beta and the blender map would have been our final product.
 
 
 
