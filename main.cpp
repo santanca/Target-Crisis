@@ -42,7 +42,7 @@ using namespace std;
 //vars to save mouse x/y coord
 int mouseX = 0, mouseY = 0;
 
-Object deer;
+Object car("car.obj");
 
 float light_pos[] = {5,10,5,1};
 /*** CAMERA VARIABLES***/
@@ -638,7 +638,21 @@ void Draw3DScene(){
 	glEnable(GL_TEXTURE_2D);
 	DrawFloor();
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
-	
+		
+	//Draw Cars
+	glPushMatrix();
+		glTranslatef(50, -4.5, 55);
+		glScalef(0.1, 0.1, 0.1);
+		car.render();
+	glPopMatrix();
+
+	//Draw
+	glPushMatrix();
+		glTranslatef(-10, -4, -1);
+		glScalef(0.1, 0.1, 0.1);
+		car.render();
+	glPopMatrix();
+
 	//Draw Map
 	glPushMatrix();
 		glTranslatef(side,up,0);
@@ -796,7 +810,6 @@ void Draw3DScene(){
 		glBindTexture(GL_TEXTURE_2D, textures[5]);
 		s.glutSolidCube2(1);
 	glPopMatrix();
-
 
 	checkPlayerHit();
 	glDisable(GL_TEXTURE_2D);
@@ -1276,6 +1289,9 @@ void ManageAmmo(){
 //Initialize variables and Hud images
 void init(void)
 {
+	//Load Car obj
+	car = Object("car.obj");
+
 	//Load HUD images
 	images[0] = LoadPPM("HUD/h1.ppm", &width, &height, &max2);
 	images[1] = LoadPPM("HUD/h2.ppm", &width, &height, &max2);
@@ -1465,15 +1481,6 @@ void checkClearedStage(){
  */
 void display(void)
 {
-
-	glPushMatrix();
-		// glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glTranslatef(-5, 5, 0);
-		glScalef(0.1, 0.1, 0.1);
-		deer.render();
-	glPopMatrix();
-
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	elapsedTime = glutGet(GLUT_ELAPSED_TIME);
 	//Draw HUD, Text, and 3D scene
