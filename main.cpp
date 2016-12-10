@@ -441,7 +441,6 @@ void DrawText(){
 				}else{
 					str = "0";
 					gameOver = true;
-					
 				}
 
 				
@@ -859,7 +858,7 @@ GLubyte* LoadPPM(char* file, int* width, int* height, int* max)
 
 
 void click(){
-	if(isReloading == false && cameraHeight == 2.5){
+	if(isReloading == false && cameraHeight == 2.5 && gameOver == false){
 	//get the ray picking vector
 	vector<vec3D> vector = getRay();
 	vec3D Rd = vector[1];
@@ -876,17 +875,6 @@ void click(){
 			ammo = 6;
 		}
 	}
-	printf("ammo %i\n", ammo);
-	//calculate if you hit an enemy
-
-
-
-	/*
-	-Search through list of objects in the Scene Graph and test Intersections with all of them
-	-keep track of all the objects I hit, but only select the closest one
-	*/
-
-
 }
 
 /*
