@@ -33,7 +33,7 @@ Objective:
 Clear the stage of enemies in the shortest amount of time. When enemies are shooting at you you will have the chance to duck/crouch behind obstacles to avoid getting hit. If you get hit three times or you run out of time its a GAME OVER.
 
 Run instrutions:
-Download folder and type ‘make’ in the terminal to create executable.
+Download folder and type ‘make’ in the terminal to create executable. Open GL and freeGlut download instructions below. Recommended operating system: Linux or Mac OSX
 
 **NOTE**
 Included with our game code is a Blender map we intended to utilize with the final version of the game and the obj loader we created to implement the map with our code. Had we a little more time, a combination of the game mechanics you see here in our finished beta and the blender map would have been our final product.
